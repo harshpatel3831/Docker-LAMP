@@ -14,16 +14,6 @@ services:
     depends_on:
       - php
 
-  # PHP Service
-  php:
-    build: ./.docker/php
-    working_dir: /var/www/php
-    volumes:
-      - ./src:/var/www/php
-    depends_on:
-      mysql:
-        condition: service_healthy
-
   # MySQL Service
   mysql:
     image: mysql:8
@@ -38,7 +28,28 @@ services:
       interval: 5s
       retries: 10
 
+ # PHP Service
+  php:
+    build: ./.docker/php
+    working_dir: /var/www/php
+    volumes:
+      - ./src:/var/www/php
+        #    depends_on:
+        #      mysql:
+        #        condition: service_healthy
+
+ # PhpMyAdmin Service  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mysql
+
 # Volumes
 volumes:
 
   mysqldata:
+
+
+
